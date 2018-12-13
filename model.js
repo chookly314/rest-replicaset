@@ -57,9 +57,13 @@ exports.create = function (data, callback, error) {
 	
 	// Implementar creación de restaurante con los datos contenidos en 'data'. 
 	// Una vez creado satisfactoriamente debe llamarse a la función 'callback'
-
 	var restaurant_id = "31415926" + Math.floor(Math.random() * (10000000 - 0));
 	data["restaurant_id"] = restaurant_id;
+
+	if (!isInt(data["clientes_diarios"]) && (data["clientes_diarios"]!="")) {
+		return error("Clientes diarios tiene que ser un entero.");
+	}
+
 	db.collection("restaurants").insert(data, function(err, result) {
 		if (err) {
 			return error(err);
@@ -75,6 +79,10 @@ exports.update = function (restaurantId, data, callback, error) {
 	
 	// Implementar actualización de restaurante con los datos contenidos en 'data'. 
 	// Una vez actualizado satisfactoriamente debe llamarse a la función 'callback'
+	if (!isInt(data["clientes_diarios"]) && (data["clientes_diarios"]!="")) {
+		return error("Clientes diarios tiene que ser un entero.")
+	}
+
 	query = {"restaurant_id" : restaurantId};
 	set = {"$set": data}
 	db.collection("restaurants").update(query, set, function(err, result) {
@@ -101,3 +109,10 @@ exports.delete = function (restaurantId, callback, error) {
 		}
 	});
 }
+
+function isInt(value) {
+  var x = parseFloat(value);
+  return !isNaN(value) && (x | 0) === x;
+}
+
+
