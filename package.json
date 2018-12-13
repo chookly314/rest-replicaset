@@ -1,0 +1,14 @@
+{
+  "name": "rest_server",
+  "version": "0.0.0",
+  "private": true,
+  "scripts": {
+    "start": "node rest_server.js"
+  },
+  "dependencies": {
+    "express": "~4.13.1",
+    "body-parser": "~1.12.4",
+    "mongodb": "~3.1.10",
+    "method-override": "^2.3.1"
+  }
+}
