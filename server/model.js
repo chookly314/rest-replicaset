@@ -2,13 +2,15 @@
 var MongoClient = require('mongodb').MongoClient;
 
 // Database URL
-var db_url = 'mongodb://localhost:27017/zips_small';
-
+//var db_url = 'mongodb://localhost:27017/zips_small';
+var db_url = 'mongodb://mongo1:27017,mongo2:27017,mongo3:27017/zips_small?replicaSet=rest-replica-set';
 // Global variable for the database connection
 var db;
 
 // Inits the connection with the database
 exports.init = function (callback) {
+	// Give a bit of time to the database to be configured
+	//wait(30000);
 	console.log('Connecting to the database', db_url, '...');
 
 	// Implementar conexión a la base de datos
@@ -110,9 +112,18 @@ exports.delete = function (restaurantId, callback, error) {
 	});
 }
 
+
+// Auxiliary functions
 function isInt(value) {
   var x = parseFloat(value);
   return !isNaN(value) && (x | 0) === x;
 }
 
+function wait(ms) {
+    var start = Date.now(),
+        now = start;
+    while (now - start < ms) {
+      now = Date.now();
+    }
+}
 
