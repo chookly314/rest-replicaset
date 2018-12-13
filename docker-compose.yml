@@ -1,0 +1,51 @@
+version: "3"
+services:
+  mongo1:
+    container_name: mongo_31415926_1
+    image: mongo:latest
+    ports:
+      - "30001:27017"
+    restart: always
+    networks:
+      - cluster_network
+    volumes:
+      - ./:/opt
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rest-replica-set" ]
+
+  mongo2:
+    container_name: mongo_31415926_2
+    image: mongo:latest
+    ports:
+      - "30002:27017"
+    restart: always
+    networks:
+      - cluster_network
+    volumes:
+      - ./:/opt
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rest-replica-set" ]
+
+  mongo3:
+    container_name: mongo_31415926_3
+    image: mongo:latest
+    ports:
+      - "30003:27017"
+    restart: always
+    networks:
+      - cluster_network
+    volumes:
+      - ./:/opt
+    entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rest-replica-set" ]
+
+  config:
+    hostname: config_container
+    image: mongo:latest
+    restart: "no"
+    networks:
+      - cluster_network
+    volumes:
+      - ./:/opt
+    command: sh /opt/configure-replica.sh
+    #command: ["/bin/bash", "-c", "sleep infinity"]
+
+networks:
+    cluster_network:

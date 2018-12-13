@@ -4,12 +4,12 @@
 sleep 5
 
 # configure the replica set
-mongo --host <primary_member_host>:27017 --eval "rs.initiate({
-		_id : '<replica-set-id>',
+mongo --host mongo1:27017 --eval "rs.initiate({
+		_id : 'rest-replica-set',
 		protocolVersion: 1,
-		members: [  { _id : <member_id>, host : '<primary_member_host>:27017'},
-					{ _id : <member_id>, host : '<member_host>:27017'},
-					{ _id : <member_id>, host : '<member_host>:27017'}
+		members: [  { _id : 1, host : 'mongo1:27017'},
+					{ _id : 2, host : 'mongo2:27017'},
+					{ _id : 3, host : 'mongo3:27017'}
 				 ],
 		settings: {electionTimeoutMillis: 1000}
 	})"
@@ -17,4 +17,4 @@ mongo --host <primary_member_host>:27017 --eval "rs.initiate({
 sleep 3
 
 # import the restaurants collection
-mongoimport --host <replica-set-id>/<primary_member_host>:27017,<member_host>:27017,<member_host>:27017 -d zips_small -c restaurants < /opt/zips_small.json
+mongoimport --host rest-replica-set/mongo1:27017,mongo2:27017,mongo3:27017 -d zips_small -c restaurants < /opt/zips_small.json
