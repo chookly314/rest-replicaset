@@ -9,7 +9,7 @@ services:
     networks:
       - cluster_network
     volumes:
-      - ./:/opt
+      - ./data:/opt
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rest-replica-set" ]
 
   mongo2:
@@ -21,7 +21,7 @@ services:
     networks:
       - cluster_network
     volumes:
-      - ./:/opt
+      - ./data:/opt
     depends_on:
       - mongo1
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rest-replica-set" ]
@@ -35,7 +35,7 @@ services:
     networks:
       - cluster_network
     volumes:
-      - ./:/opt
+      - ./data:/opt
     depends_on:
       - mongo2
     entrypoint: [ "/usr/bin/mongod", "--bind_ip_all", "--replSet", "rest-replica-set" ]
@@ -47,12 +47,12 @@ services:
     networks:
       - cluster_network
     volumes:
-      - ./:/opt
+      - ./config:/opt/config
+      - ./data:/opt
     depends_on:
       - mongo3
-    command: sh /opt/configure-replica.sh
-    #command: ["/bin/bash", "-c", "sleep infinity"]
-
+    command: sh /opt/config/configure-replica.sh
+    
   server:
     hostname: app_server
     build: .

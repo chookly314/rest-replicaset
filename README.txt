@@ -1,7 +1,12 @@
 Para arrancar el servicio es necesario, únicamente, ejecutar el docket compose con:
 docker-compose up
 
-Se puede comprobar el estado del réplica set accediendo a cualquiera de los nodos. En caso de acceder a un esclavo, primeramente se debe de configurar el parámetro slaveOk o de lo contrario no se podrán realizar consultas a la base de datos. Para ello, en la "mongo shell" se ejecuta:
+Se utilizan tres volúmenes diferentes, montando uno u otro en función del contenedor:
+ - En los contenedores de MongoDB, se monta el volumen con la colección a importar (directorio data).
+ - En el contenedor de configuración, se monta el volumen que contiene el fichero de configuración del replica set (directorio config), además del de la colección.
+ - En el contenedor que correrá el servicio REST, se monta el volumen que contiene el código de la aplicación (directorio server).
+
+Se puede comprobar el estado del réplica set accediendo a cualquiera de los nodos. En caso de acceder a un esclavo, primeramente se debe de configurar el parámetro slaveOk o de lo contrario no se podrán realizar consultas a la base de datos. Para ello, en la "mongo shell" de dicho esclavo, se ejecuta:
 rs.slaveOk()
 
 Esto es necesario para prevenir a las aplicaciones de ejecutar lecturas sobre un nodo con consistencia eventual de forma accidental.
