@@ -1,7 +1,12 @@
-Para arrancar el servicio es necesario, únicamente, ejecutar el docket compose con:
+Autores:
+Miguel Gamallo Gascón
+Fernando Cepeda Sordo
+
+
+Para arrancar el servicio es necesario, únicamente, ejecutar el docker compose con:
 docker-compose up
 
-Se utilizan tres volúmenes diferentes, montando uno u otro en función del contenedor:
+Se utilizan tres volúmenes diferentes, montando uno u otro en función del contenedor, para que cada uno solo tenga visibilidad sobre los ficheros que necesita:
  - En los contenedores de MongoDB, se monta el volumen con la colección a importar (directorio data).
  - En el contenedor de configuración, se monta el volumen que contiene el fichero de configuración del replica set (directorio config), además del de la colección.
  - En el contenedor que correrá el servicio REST, se monta el volumen que contiene el código de la aplicación (directorio server).
