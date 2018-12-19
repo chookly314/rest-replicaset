@@ -1,0 +1,51 @@
+version: '3.5'
+services:
+  mongo1:
+    image: mongo:3.2.21
+    container_name: mongo1
+    command: mongod --replSet "my-mongo-set"
+    ports:
+      - "30000:27017/tcp"
+    networks:
+      - my-mongo-network
+  mongo2:
+    image: mongo:3.2.21
+    container_name: mongo2
+    command: mongod --replSet "my-mongo-set"
+    ports:
+      - "30001:27017/tcp"
+    networks:
+      - my-mongo-network
+  mongo3:
+    image: mongo:3.2.21
+    container_name: mongo3
+    command: mongod --replSet "my-mongo-set"
+    ports:
+      - "30002:27017/tcp"
+    networks:
+      - my-mongo-network
+  configurator:
+    image: mongo:3.2.21
+    container_name: configurator
+    command: /opt/data/configure-replica.sh
+    volumes:
+      - ./data:/opt/data
+    networks:
+      - my-mongo-network
+    depends_on:
+      - mongo1
+      - mongo2
+      - mongo3
+  frontend:
+    image: apozohue10/rest-server-2018
+    container_name: rest_server
+    command: /bin/bash -c "sleep 15 ;/opt/start-server.sh"
+    ports:
+      - "8000:8000/tcp"
+    networks:
+      - my-mongo-network
+    depends_on:
+      - configurator
+networks:
+  my-mongo-network:
+    driver: bridge
