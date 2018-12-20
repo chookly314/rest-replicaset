@@ -79,7 +79,7 @@ exports.update = function (restaurantId, data, callback, error) {
 	
 	// Implementar actualización de restaurante con los datos contenidos en 'data'. 
 	// Una vez actualizado satisfactoriamente debe llamarse a la función 'callback'
-	if (!isInt(data["clientes_diarios"]) && (data["clientes_diarios"]!="")) {
+	if (data["clientes_diarios"] && !isInt(data["clientes_diarios"]) && (data["clientes_diarios"]!="")) {
 		return error("Clientes diarios tiene que ser un entero.")
 	}
 
