@@ -85,7 +85,7 @@ exports.update = function (restaurantId, data, callback, error) {
 
 	query = {"restaurant_id" : restaurantId};
 	set = {"$set": data}
-	db.collection("restaurants").update(query, set, function(err, result) {
+	db.collection("restaurants").updateOne(query, set, function(err, result) {
 		if (err) {
 			return error(err);
 		} else {
